@@ -35,7 +35,7 @@ public class InputAction
     public InputAction(Buttons[] triggerButtons, Keys[] triggerKeys, bool firstPressOnly)
     {
         _buttons = triggerButtons != null ? triggerButtons.Clone() as Buttons[] : new Buttons[0];
-        _keys = triggerKeys != null ? triggerKeys.Clone() as Keys[] : new Keys [0];
+        _keys = triggerKeys != null ? triggerKeys.Clone() as Keys[] : new Keys[0];
         _firstPressOnly = firstPressOnly;
     }
 
@@ -46,16 +46,16 @@ public class InputAction
     /// <param name="controllingPlayer">The player who is controlling the input</param>
     /// <param name="playerIndex">The index of the player who triggered the input</param>
     /// <returns>True if the input action has occurred, false otherwise</returns>
-    public bool Occured(InputState inputState, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
+    public bool Occured(IInputState inputState, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
     {
         ButtonPress buttonTest;
         KeyPress keyTest;
 
-        if(_firstPressOnly)
+        if (_firstPressOnly)
         {
             buttonTest = inputState.IsNewButtonPress;
             keyTest = inputState.IsNewKeyPress;
-            
+
         }
         else
         {
@@ -63,18 +63,18 @@ public class InputAction
             keyTest = inputState.IsKeyPressed;
         }
 
-        foreach(var button in _buttons)
+        foreach (var button in _buttons)
         {
-            if(buttonTest(button, controllingPlayer, out playerIndex))
+            if (buttonTest(button, controllingPlayer, out playerIndex))
                 return true;
         }
-        foreach(var key in _keys)
+        foreach (var key in _keys)
         {
-            if(keyTest(key))
+            if (keyTest(key))
             {
                 playerIndex = PlayerIndex.One; // Keyboard is always player one
                 return true;
-            } 
+            }
         }
 
         // If we get here, no button or key was pressed
